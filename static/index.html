@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ClariSight — Adaptive Multimodal Visual Assistant Prototype</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>ClariSight</h1>
+      <span class="subtitle">Adaptive Multimodal Visual Assistant — Interactive Prototype</span>
+    </div>
+    <div class="legend" aria-label="Implementation status legend">
+      <span class="badge impl">Implemented</span>
+      <span class="badge sim">Simulated Hardware/CV</span>
+      <span class="badge plan">Planned</span>
+    </div>
+  </header>
+
+  <main class="grid">
+    <!-- LEFT: Simulated Smart-Glasses Viewport & Scenarios -->
+    <section class="card" aria-labelledby="viewport-heading">
+      <div class="card-head">
+        <h2 id="viewport-heading">1. Camera Input &amp; Detection Stream</h2>
+        <span class="badge sim">Simulated CV / Optional Live Webcam</span>
+      </div>
+
+      <div class="scenario-bar" id="scenario-buttons" role="group" aria-label="Test scenarios"></div>
+
+      <div class="viewport-box" id="viewport-box">
+        <video id="webcam-video" autoplay playsinline muted class="hidden"></video>
+        <canvas id="webcam-canvas" class="hidden" width="160" height="120"></canvas>
+        <div id="scene-overlay" class="scene-overlay">
+          <div class="scene-header">
+            <strong id="scene-title">Loading scene...</strong>
+            <span id="scene-source" class="pill">Simulated Vision Stream</span>
+          </div>
+          <div class="metrics-row">
+            <div class="metric">
+              <span class="metric-label">Brightness</span>
+              <span id="metric-brightness" class="metric-value">--</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Sharpness</span>
+              <span id="metric-sharpness" class="metric-value">--</span>
+            </div>
+            <div class="metric">
+              <span class="metric-label">Top Confidence</span>
+              <span id="metric-confidence" class="metric-value">--</span>
+            </div>
+          </div>
+          <div class="detections-list" id="detections-list"></div>
+        </div>
+      </div>
+
+      <div class="webcam-controls">
+        <button id="btn-webcam" class="btn secondary">Enable Live Webcam Quality Sensor (Optional)</button>
+        <button id="btn-sample-webcam" class="btn secondary hidden">Sample Live Lighting/Blur Now</button>
+      </div>
+      <p class="hint-text">
+        Tip: Enable your laptop webcam and cover the lens with your hand to trigger the real-time Uncertainty Gate, or use the 4 reproducible test scenarios above.
+      </p>
+    </section>
+
+    <!-- RIGHT: Adaptive Output, Controls & Explainability -->
+    <section class="card" aria-labelledby="output-heading">
+      <div class="card-head">
+        <h2 id="output-heading">2. Adaptive Output &amp; User Control</h2>
+        <span class="badge impl">Implemented Engine + Web Audio/TTS</span>
+      </div>
+
+      <!-- Mode & Verbosity Controls -->
+      <div class="control-row">
+        <div class="control-group">
+          <label>Interaction Mode (Keys 1 / 2)</label>
+          <div class="btn-group">
+            <button id="btn-mode-nav" class="btn mode-btn">1: Navigation</button>
+            <button id="btn-mode-find" class="btn mode-btn">2: Object Finding</button>
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="target-input">Target Object</label>
+          <div class="inline-form">
+            <input id="target-input" type="text" value="medicine bottle" aria-label="Target object to find" />
+            <button id="btn-set-target" class="btn secondary">Set</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Response Banner -->
+      <div id="response-panel" class="response-panel status-ok" role="status" aria-live="polite">
+        <div class="response-meta">
+          <span id="resp-tier" class="pill tier-pill">Tier 1: Concise</span>
+          <span id="resp-earcon" class="pill">Earcon: --</span>
+          <span id="resp-haptic" class="pill haptic-pill">Haptic (Simulated): --</span>
+        </div>
+        <p id="resp-speech" class="speech-text">Ready.</p>
+        <p id="resp-hint" class="guidance-hint hidden"></p>
+      </div>
+
+      <!-- Direct Action Controls -->
+      <div class="action-bar">
+        <button id="btn-detail" class="btn primary">D: Detail (Tier 2)</button>
+        <button id="btn-bargein" class="btn danger">Space: Barge-In / Stop Speech</button>
+        <button id="btn-why" class="btn secondary">R: Why This Output?</button>
+        <button id="btn-correct" class="btn warning">C: Report Misdetection</button>
+        <label class="toggle-audio">
+          <input type="checkbox" id="chk-audio" checked />
+          Voice &amp; Earcons On
+        </label>
+      </div>
+
+      <!-- Explainability Box (Amershi G11) -->
+      <div id="why-panel" class="why-panel">
+        <div class="why-head">
+          <strong>System Rationale ("Why?" — Amershi G11)</strong>
+          <span id="suppressed-badge" class="pill">Suppressed: 0</span>
+        </div>
+        <p id="resp-explanation">--</p>
+      </div>
+
+      <!-- Planned Hardware Note -->
+      <div class="planned-strip">
+        <span class="badge plan">Planned</span>
+        <span>On-device YOLO/Depth inference, BLE wrist haptic actuator, and cross-session verbosity memory.</span>
+      </div>
+    </section>
+
+    <!-- BOTTOM: Interaction Audit Log -->
+    <section class="card full-width" aria-labelledby="log-heading">
+      <div class="card-head">
+        <h2 id="log-heading">3. Live Interaction &amp; Correction Log</h2>
+        <span id="correction-counter" class="pill">User Corrections Logged: 0</span>
+      </div>
+      <ul id="event-log" class="event-log"></ul>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
